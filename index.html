@@ -250,6 +250,7 @@ input[type=password]{text-transform:none!important}
 .pw-wrap{position:relative;width:100%}
 .pw-wrap input{padding-right:44px!important}
 .pw-eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:18px;cursor:pointer;padding:6px;min-height:0;width:auto;box-shadow:none;color:#1C1C1E}
+header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:#F9F9F9!important}
 
 </style>
 </head>
@@ -714,44 +715,21 @@ async function refreshOnline(){
   } catch(e) { console.error('presence', errMsg(e)); }
 }
 
+function subscribe(){ 
+  window.lastTouch = 0;
+document.addEventListener('touchstart', () => window.lastTouch = Date.now(), {passive: true});
+document.addEventListener('touchmove', () => window.lastTouch = Date.now(), {passive: true});
+document.addEventListener('touchend', () => window.lastTouch = Date.now(), {passive: true});
+
 function subscribe(){
   setInterval(async () => {
     const a = document.activeElement;
-    if (a && a.tagName === 'INPUT') return;
+    if (a && ['INPUT','SELECT','TEXTAREA'].includes(a.tagName)) return;
     if (document.querySelector('dialog[open]')) return;
+    if (Date.now() - window.lastTouch < 2000) return;
     try { await syncChain; await loadAll(); render(); await refreshOnline(); }
     catch(e) { console.error('Supabase:', errMsg(e)); }
   }, 5000);
-}
-function uid(){ return Math.random().toString(36).slice(2,9); }
-function pad(n){ return String(n).padStart(2,'0'); }
-function dayKey(d){ return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()); }
-function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function norm(s){ return String(s == null ? '' : s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(); }
-function findP(id){ return db.products.find(p => p.id === id); }
-function findS(p, id){ return p.sizes.find(s => s.id === id); }
-function allSizes(){ const out = []; db.products.forEach(p => p.sizes.forEach(s => out.push({p, s}))); return out; }
-function lowSizes(){ return allSizes().filter(({s}) => s.min !== null && s.qty <= s.min); }
-function sizeNames(){ const n = []; db.products.forEach(p => p.sizes.forEach(s => { if (!n.includes(s.name)) n.push(s.name); })); return n.sort(cmpSize); }
-function fmtDate(iso){ return new Date(iso).toLocaleString('es-CL', {day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'}); }
-function purgeTrash(){ const lim = Date.now() - 30*864e5; db.trash = db.trash.filter(t => t.deletedAt > lim); }
-function parseSizes(txt){
-  const out = [];
-  String(txt || '').split(',').map(t => t.trim()).filter(Boolean).forEach(t => {
-    const m = t.match(/^(\d+)\s*(?:-|a)\s*(\d+)$/i);
-    if (m){ const a = +m[1], b = +m[2]; if (b >= a && b - a < 40) for (let i = a; i <= b; i++) out.push(String(i)); }
-    else out.push(t);
-  });
-  return [...new Set(out)];
-}
-async function shrink(file){
-  try {
-    let f = file;
-    if (window.imageCompression && /^image\//.test(file.type)){
-      f = await imageCompression(file, {maxSizeMB: 0.3, maxWidthOrHeight: 1600, useWebWorker: true, initialQuality: 0.8});
-    }
-    return await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(f); });
-  } catch(e){ return null; }
 }
 
 /* ---------- Vistas ---------- */
