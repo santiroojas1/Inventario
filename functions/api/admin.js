@@ -1,9 +1,9 @@
-export async function onRequestPost(context) {
-  return new Response(JSON.stringify({ ok: true }), {
-    headers: { 'Content-Type': 'application/json' }
-  });
-}
-
+// Cloudflare Pages Function: administración de usuarios
+// La clave service_role vive SOLO en la variable de entorno SUPABASE_SERVICE_KEY
+// Variables requeridas en Cloudflare Pages (Settings > Environment variables):
+//   SUPABASE_URL          = https://TU-PROYECTO.supabase.co
+//   SUPABASE_SERVICE_KEY  = (clave service_role, marcada como Encrypted)
+//   ADMIN_USERS           = santiago,alejandro
 
 const json = (obj, status = 200) =>
   new Response(JSON.stringify(obj), { status, headers: { 'Content-Type': 'application/json' } });
@@ -17,7 +17,10 @@ export async function onRequestPost({ request, env }) {
   const meRes = await fetch(SB + '/auth/v1/user', { headers: { apikey: SK, Authorization: 'Bearer ' + token } });
   if (!meRes.ok) return json({ error: 'Sesión no válida' }, 401);
   const me = await meRes.json();
-  const myName = ((me.user_metadata && me.user_metadata.username) || '').toLowerCase();
+
+  // Se usa el email (no user_metadata, que el usuario puede editar)
+  const myEmail = (me.email || '').toLowerCase();
+  const myName = myEmail.replace('@inventario.internal', '');
 
   // 2) Solo administradores
   const admins = (env.ADMIN_USERS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
@@ -31,6 +34,13 @@ export async function onRequestPost({ request, env }) {
     const d = await r.json();
     return d.users || d;
   };
+
+  const findByUsername = async (username) => {
+    const email = username + '@inventario.internal';
+    const users = await listUsers();
+    return users.find(x => (x.email || '').toLowerCase() === email);
+  };
+
   const audit = async (action, target) => {
     await fetch(SB + '/rest/v1/audit_log', {
       method: 'POST',
@@ -43,7 +53,7 @@ export async function onRequestPost({ request, env }) {
     const users = await listUsers();
     return json({ users: users.map(u => ({
       id: u.id,
-      username: (u.user_metadata && u.user_metadata.username) || '',
+      username: (u.email || '').replace('@inventario.internal', ''),
       created: u.created_at,
       last_sign_in: u.last_sign_in_at,
       must_change: !!(u.user_metadata && u.user_metadata.must_change)
@@ -58,7 +68,7 @@ export async function onRequestPost({ request, env }) {
     const r = await fetch(SB + '/auth/v1/admin/users', {
       method: 'POST', headers: adminHeaders,
       body: JSON.stringify({ email: username + '@inventario.internal', password, email_confirm: true,
-        user_metadata: { username, must_change: true } })
+        user_metadata: { must_change: true } })
     });
     if (!r.ok) return json({ error: 'No se pudo crear: ' + (await r.text()) }, 400);
     await audit('CREADO', username);
@@ -66,14 +76,14 @@ export async function onRequestPost({ request, env }) {
   }
 
   if (body.action === 'reset') {
-    const username = String(body.username || '').toLowerCase();
+    const username = String(body.username || '').trim().toLowerCase();
     const password = String(body.password || '');
     if (password.length < 6) return json({ error: 'La clave temporal debe tener al menos 6 caracteres.' }, 400);
-    const u = (await listUsers()).find(x => ((x.user_metadata && x.user_metadata.username) || '') === username);
+    const u = await findByUsername(username);
     if (!u) return json({ error: 'Usuario no encontrado' }, 404);
     const r = await fetch(SB + '/auth/v1/admin/users/' + u.id, {
       method: 'PUT', headers: adminHeaders,
-      body: JSON.stringify({ password, user_metadata: { ...(u.user_metadata || {}), username, must_change: true } })
+      body: JSON.stringify({ password, user_metadata: { ...(u.user_metadata || {}), must_change: true } })
     });
     if (!r.ok) return json({ error: 'No se pudo resetear: ' + (await r.text()) }, 400);
     await audit('CLAVE RESETEADA', username);
@@ -81,9 +91,9 @@ export async function onRequestPost({ request, env }) {
   }
 
   if (body.action === 'delete') {
-    const username = String(body.username || '').toLowerCase();
+    const username = String(body.username || '').trim().toLowerCase();
     if (username === myName) return json({ error: 'No puedes borrar tu propio usuario.' }, 400);
-    const u = (await listUsers()).find(x => ((x.user_metadata && x.user_metadata.username) || '') === username);
+    const u = await findByUsername(username);
     if (!u) return json({ error: 'Usuario no encontrado' }, 404);
     const r = await fetch(SB + '/auth/v1/admin/users/' + u.id, { method: 'DELETE', headers: adminHeaders });
     if (!r.ok) return json({ error: 'No se pudo borrar: ' + (await r.text()) }, 400);
