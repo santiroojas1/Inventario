@@ -1,10 +1,9 @@
-functions/api/admin.js
-// Cloudflare Pages Function: administración de usuarios.
-// La clave service_role vive SOLO en la variable secreta SUPABASE_SERVICE_KEY de Cloudflare.
-// Variables requeridas en Cloudflare Pages (Settings > Variables and Secrets):
-//   SUPABASE_URL          = https://jxgonnnrbwqzwbbcerbt.supabase.co
-//   SUPABASE_SERVICE_KEY  = (clave service_role, tipo Secret)
-//   ADMIN_USERS           = santiago,alejandro
+export async function onRequestPost(context) {
+  return new Response(JSON.stringify({ ok: true }), {
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+
 
 const json = (obj, status = 200) =>
   new Response(JSON.stringify(obj), { status, headers: { 'Content-Type': 'application/json' } });
