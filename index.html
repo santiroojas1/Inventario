@@ -246,6 +246,11 @@ dialog .btn{min-height:48px}
 .sem-ok{background:#E8F8EC;color:#1E7A3A}
 .sem-warn{background:#FFF3CD;color:#7A5A00}
 .sem-bad{background:#FFE5E5;color:#B00020}
+input[type=password]{text-transform:none!important}
+.pw-wrap{position:relative;width:100%}
+.pw-wrap input{padding-right:44px!important}
+.pw-eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:18px;cursor:pointer;padding:6px;min-height:0;width:auto;box-shadow:none;color:#1C1C1E}
+
 </style>
 </head>
 <body>
@@ -2681,5 +2686,43 @@ function saveUser(){
   render(); showAlerts();
 })();
 </script>
+<script>
+(function(){
+  function wrap(inp){
+    if (inp.dataset.pw) return;
+    inp.dataset.pw = '1';
+    const w = document.createElement('div');
+    w.className = 'pw-wrap';
+    inp.parentNode.insertBefore(w, inp);
+    w.appendChild(inp);
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'pw-eye';
+    b.textContent = '👁';
+    b.onclick = () => {
+      const mostrar = inp.type === 'password';
+      inp.type = mostrar ? 'text' : 'password';
+      b.textContent = mostrar ? '🙈' : '👁';
+    };
+    w.appendChild(b);
+  }
+  function scan(){
+    document.querySelectorAll('input[type=password]').forEach(wrap);
+    const chg = document.getElementById('chg');
+    if (chg && !chg.querySelector('.salir')){
+      const card = chg.firstElementChild;
+      const b = document.createElement('button');
+      b.className = 'btn alt salir';
+      b.textContent = 'Salir (volver al ingreso)';
+      b.style.cssText = 'width:100%;margin-top:8px';
+      b.onclick = () => logout();
+      card.appendChild(b);
+    }
+  }
+  scan();
+  new MutationObserver(scan).observe(document.body, {childList: true, subtree: true});
+})();
+</script>
+
 </body>
 </html>
