@@ -4,7 +4,7 @@
 //   SUPABASE_URL          = https://TU-PROYECTO.supabase.co
 //   SUPABASE_SERVICE_KEY  = (clave service_role, marcada como Encrypted)
 //   ADMIN_USERS           = santiago,alejandro
- 
+
 const json = (obj, status = 200) =>
   new Response(JSON.stringify(obj), { status, headers: { 'Content-Type': 'application/json' } });
 
