@@ -2074,12 +2074,12 @@ function renderInv(){
     return '<div class="card" style="padding:10px">' +
       '<div class="muted">' + esc(l.raw || l.name) + ' · Talla: ' + esc(l.size || '—') + ' · Elegido: ' + esc(cur || 'ninguno') + '</div>' +
       '<div class="row wrap" style="margin-top:6px;gap:6px">' +
-        '<input list="dl' + i + '" value="" placeholder="' + esc(cur || 'Escribe para buscar producto') + '" style="flex:3;min-width:180px" onchange="invPick(' + i + ',this.value)">' +
-        '<datalist id="dl' + i + '"><option value="CREAR PRODUCTO NUEVO"></option><option value="DEJAR PENDIENTE"></option>' + dl + '</datalist>' +
+        '<input value="" placeholder="' + esc(cur || 'Escribe para buscar producto') + '" style="flex:3;min-width:180px" oninput="invSuggest(' + i + ',this.value)" onfocus="invSuggest(' + i + ',this.value)">' +
+
         (true ? '<select style="flex:1;min-width:90px" onchange="invSet(' + i + ',\'size\',this.value)"><option value="">Talla</option>' + sOpts + '</select>' : '') +
         '<input type="number" min="0" style="width:90px" value="' + l.qty + '" onchange="invSet(' + i + ',\'qty\',this.value)">' +
         '<button class="btn alt sm" onclick="invDel(' + i + ')">×</button>' +
-      '</div>' + info +
+      '</div>' + info + '<div id="sug' + i + '"></div>' +
       (isNew ? '<div class="row" style="margin-top:6px;gap:6px"><input placeholder="Nombre del producto" value="' + esc(l.name) + '" onchange="invSet(' + i + ',\'name\',this.value.toUpperCase())"><input placeholder="Color (opcional)" value="' + esc(l.color) + '" onchange="invSet(' + i + ',\'color\',this.value.toUpperCase())"><select onchange="invSet(' + i + ',\'bodega\',this.value)">' + bodegaList().map(bg => '<option value="' + esc(bg) + '" ' + (l.bodega === bg ? 'selected' : '') + '>' + esc(bg) + '</option>').join('') + '</select></div>' : '') +
     '</div>';
   }).join('') || '<div class="muted">Sin líneas todavía.</div>';
@@ -2304,9 +2304,9 @@ function renderOrd(){
       '<input type="number" min="0" value="' + l.qty + '" style="width:90px" onchange="ordSet(' + i + ',\'qty\',this.value)">' +
       '<button class="btn alt sm" onclick="' + (ordDraft.editId ? 'ordRemove(' : 'ordDel(') + i + ')">×</button></div>' +
       '<div class="row wrap" style="margin-top:6px;gap:6px">' +
-      '<input list="odl' + i + '" value="" placeholder="' + esc(p ? labelOf(p) : 'Escribe para buscar producto') + '" style="flex:3;min-width:180px" onchange="ordPick(' + i + ',this.value)">' +
-      '<datalist id="odl' + i + '"><option value="CREAR PRODUCTO NUEVO"></option>' + dl + '</datalist>' +
-      '<select style="flex:1;min-width:90px" onchange="ordSet(' + i + ',\'size\',this.value)"><option value="">Talla</option>' + sOpts + '</select>' + st + '</div></div>';
+      '<input value="" placeholder="' + esc(p ? labelOf(p) : 'Escribe para buscar producto') + '" style="flex:3;min-width:180px" oninput="ordSuggest(' + i + ',this.value)" onfocus="ordSuggest(' + i + ',this.value)">' +
+
+      '<select style="flex:1;min-width:90px" onchange="ordSet(' + i + ',\'size\',this.value)"><option value="">Talla</option>' + sOpts + '</select>' + st + '</div><div id="osug' + i + '"></div></div>';
   }).join('') || '<div class="muted">Sin líneas todavía.</div>';
 }
 async function ordConfirm(){
@@ -2744,6 +2744,25 @@ function openCellEdit(pid, sid){
   $('photo').value = '';
   dlgMove.showModal();
 }
+
+/* ---------- Buscador de productos con lista visible (iPhone, Android, iPad) ---------- */
+function renderSug(kind, i, probe, q){
+  const box = document.getElementById((kind === 'ord' ? 'osug' : 'sug') + i);
+  if (!box) return;
+  const qn = norm(q || '').trim();
+  let list = db.products.map(p => ({p: p, s: simScore(qn || probe, labelOf(p)) + (qn && norm(labelOf(p)).includes(qn) ? 1 : 0)}));
+  if (qn) list = list.filter(x => x.s > 0);
+  list.sort((a, b) => b.s - a.s);
+  list = list.slice(0, 8);
+  const set = kind === 'ord' ? 'ordSet' : 'invSet';
+  const quick = kind === 'ord' ? 'ordQuickCreate' : 'invQuickCreate';
+  box.innerHTML = '<div class="muted" style="margin:6px 0 2px">Elige un producto:</div>' +
+    list.map(x => '<button class="btn alt" style="width:100%;text-align:left;margin-top:4px;min-height:46px" onclick="' + set + '(' + i + ',\'pid\',\'' + x.p.id + '\')">' + esc(labelOf(x.p)) + '</button>').join('') +
+    '<button class="btn" style="width:100%;margin-top:6px;min-height:46px" onclick="' + quick + '(' + i + ')">+ Crear producto nuevo</button>' +
+    '<button class="btn alt" style="width:100%;margin-top:4px;min-height:46px" onclick="' + set + '(' + i + ',\'pid\',\'__PEND__\')">Dejar pendiente</button>';
+}
+function invSuggest(i, q){ const l = invDraft.lines[i]; renderSug('inv', i, (l.name || '') + ' ' + (l.raw || ''), q); }
+function ordSuggest(i, q){ const l = ordDraft.lines[i]; renderSug('ord', i, l.desc || '', q); }
 
 /* ---------- Usuario ---------- */
 function openUser(){ $('uName').value = user; dlgUser.showModal(); }
