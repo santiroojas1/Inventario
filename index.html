@@ -241,17 +241,13 @@ dialog .btn{min-height:48px}
 .lab .lcode{font-size:24pt;font-weight:800;letter-spacing:1px;font-family:Menlo,Consolas,monospace;margin:1mm 0}
 /* CONTEO */
 .help{background:#F2F2F7;border-radius:12px;padding:12px 14px;font-size:15px;line-height:1.5;color:#1C1C1E;font-weight:500}
+/* CLAVES: distinguir mayúsculas */
+input[type=password],#lockMail,#chgOld{text-transform:none !important}
 /* SEMAFORO Y OC */
 .sem{display:inline-block;border-radius:999px;padding:3px 9px;font-size:12px;font-weight:700;margin-left:4px}
 .sem-ok{background:#E8F8EC;color:#1E7A3A}
 .sem-warn{background:#FFF3CD;color:#7A5A00}
 .sem-bad{background:#FFE5E5;color:#B00020}
-input[type=password]{text-transform:none!important}
-.pw-wrap{position:relative;width:100%}
-.pw-wrap input{padding-right:44px!important}
-.pw-eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:18px;cursor:pointer;padding:6px;min-height:0;width:auto;box-shadow:none;color:#1C1C1E}
-header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:#F9F9F9!important}
-
 </style>
 </head>
 <body>
@@ -291,8 +287,11 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
     <div class="muted" style="margin-bottom:14px">Inicia sesión con tu usuario y tu clave</div>
     <input id="lockMail" type="text" placeholder="Usuario (ej: renato)" autocomplete="username" autocapitalize="none" style="width:100%;margin-bottom:8px">
     <input id="lockPass" type="password" placeholder="Clave" autocomplete="current-password" style="width:100%" onkeydown="if(event.key==='Enter')unlock()">
+    <button class="btn alt" style="width:100%;margin-top:6px" onclick="togglePass(this,'lockPass')">Ver clave</button>
+    <div id="capsWarn" style="display:none;color:#B7791F;font-weight:700;margin-top:6px">⚠ Bloq Mayús está activado: la clave distingue mayúsculas.</div>
     <div id="lockMsg" class="muted" style="color:#FF3B30;min-height:20px;margin-top:6px"></div>
     <button class="btn" style="width:100%;margin-top:8px" onclick="unlock()">Entrar</button>
+    <button class="btn alt" style="width:100%;margin-top:8px" onclick="logout()">Entrar con otro usuario</button>
   </div>
 </div>
 <div id="chg" style="position:fixed;inset:0;background:#F2F2F7;z-index:10000;display:none;align-items:center;justify-content:center;padding:24px">
@@ -303,7 +302,10 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
     <input id="chgA" type="password" placeholder="Clave nueva" autocomplete="new-password" style="width:100%;margin-bottom:8px">
     <input id="chgB" type="password" placeholder="Repite la clave nueva" autocomplete="new-password" style="width:100%">
     <div id="chgMsg" class="muted" style="color:#FF3B30;min-height:20px;margin-top:6px"></div>
+    <button class="btn alt" style="width:100%;margin-top:8px" onclick="togglePassAll(this)">Ver claves</button>
+    <div id="chgCaps" style="display:none;color:#B7791F;font-weight:700;margin-top:6px">⚠ Bloq Mayús está activado: la clave distingue mayúsculas.</div>
     <button class="btn" style="width:100%;margin-top:8px" onclick="chgSave()">Guardar mi clave</button>
+    <button class="btn alt" style="width:100%;margin-top:8px" onclick="logout()">Entrar con otro usuario</button>
     <button class="btn alt" id="chgCancel" style="width:100%;margin-top:8px" onclick="document.getElementById('chg').style.display='none'">Cancelar</button>
   </div>
 </div>
@@ -715,21 +717,56 @@ async function refreshOnline(){
   } catch(e) { console.error('presence', errMsg(e)); }
 }
 
-function subscribe(){ 
-  window.lastTouch = 0;
-document.addEventListener('touchstart', () => window.lastTouch = Date.now(), {passive: true});
-document.addEventListener('touchmove', () => window.lastTouch = Date.now(), {passive: true});
-document.addEventListener('touchend', () => window.lastTouch = Date.now(), {passive: true});
-
+function uiBusy(){
+  const a = document.activeElement;
+  if (a && ['SELECT','INPUT','TEXTAREA'].includes(a.tagName)) return true;
+  if (Date.now() - (window.lastTouchAt || 0) < 4000) return true;
+  if (document.querySelector('dialog[open]')) return true;
+  return false;
+}
 function subscribe(){
+  document.addEventListener('touchstart', () => { window.lastTouchAt = Date.now(); }, {passive: true});
+  document.addEventListener('pointerdown', () => { window.lastTouchAt = Date.now(); }, {passive: true});
   setInterval(async () => {
-    const a = document.activeElement;
-    if (a && ['INPUT','SELECT','TEXTAREA'].includes(a.tagName)) return;
-    if (document.querySelector('dialog[open]')) return;
-    if (Date.now() - window.lastTouch < 2000) return;
-    try { await syncChain; await loadAll(); render(); await refreshOnline(); }
-    catch(e) { console.error('Supabase:', errMsg(e)); }
+    if (uiBusy()) return;
+    try {
+      const before = JSON.stringify(db);
+      await syncChain;
+      await loadAll();
+      if (!uiBusy() && JSON.stringify(db) !== before) render();
+      await refreshOnline();
+    } catch(e){ console.error('Supabase:', errMsg(e)); }
   }, 5000);
+}
+function uid(){ return Math.random().toString(36).slice(2,9); }
+function pad(n){ return String(n).padStart(2,'0'); }
+function dayKey(d){ return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()); }
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function norm(s){ return String(s == null ? '' : s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(); }
+function findP(id){ return db.products.find(p => p.id === id); }
+function findS(p, id){ return p.sizes.find(s => s.id === id); }
+function allSizes(){ const out = []; db.products.forEach(p => p.sizes.forEach(s => out.push({p, s}))); return out; }
+function lowSizes(){ return allSizes().filter(({s}) => s.min !== null && s.qty <= s.min); }
+function sizeNames(){ const n = []; db.products.forEach(p => p.sizes.forEach(s => { if (!n.includes(s.name)) n.push(s.name); })); return n.sort(cmpSize); }
+function fmtDate(iso){ return new Date(iso).toLocaleString('es-CL', {day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'}); }
+function purgeTrash(){ const lim = Date.now() - 30*864e5; db.trash = db.trash.filter(t => t.deletedAt > lim); }
+function parseSizes(txt){
+  const out = [];
+  String(txt || '').split(',').map(t => t.trim()).filter(Boolean).forEach(t => {
+    const m = t.match(/^(\d+)\s*(?:-|a)\s*(\d+)$/i);
+    if (m){ const a = +m[1], b = +m[2]; if (b >= a && b - a < 40) for (let i = a; i <= b; i++) out.push(String(i)); }
+    else out.push(t);
+  });
+  return [...new Set(out)];
+}
+async function shrink(file){
+  try {
+    let f = file;
+    if (window.imageCompression && /^image\//.test(file.type)){
+      f = await imageCompression(file, {maxSizeMB: 0.3, maxWidthOrHeight: 1600, useWebWorker: true, initialQuality: 0.8});
+    }
+    return await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(f); });
+  } catch(e){ return null; }
 }
 
 /* ---------- Vistas ---------- */
@@ -2087,8 +2124,17 @@ let ordDraft = null;
 function ordKey(desc){ return normName(cleanLineName(desc) || desc); }
 function normNum(x){ return String(x || '').replace(/[^A-Za-z0-9]/g, '').toUpperCase(); }
 function committedOf(pid, size){
+  const p = findP(pid); if (!p) return 0;
+  const key = normName(p.name) + '|' + (p.color || '') + '|' + (p.genero || '');
   let c = 0;
-  db.orders.forEach(o => { if (o.status !== 'ABIERTA') return; (o.lines || []).forEach(l => { if (l.pid === pid && l.size === size) c += Math.max(0, l.qty - (l.invoiced || 0)); }); });
+  db.orders.forEach(o => {
+    if (o.status !== 'ABIERTA') return;
+    (o.lines || []).forEach(l => {
+      const lp = findP(l.pid); if (!lp) return;
+      const k2 = normName(lp.name) + '|' + (lp.color || '') + '|' + (lp.genero || '');
+      if (k2 === key && l.size === size) c += Math.max(0, l.qty - (l.invoiced || 0));
+    });
+  });
   return c;
 }
 function semaforo(p, s){
@@ -2632,6 +2678,23 @@ function applyAliasesToLines(lines, clientName){
   return n;
 }
 
+/* ---------- Claves: ver, y aviso de Bloq Mayús ---------- */
+function togglePass(btn, id){
+  const el = document.getElementById(id);
+  el.type = el.type === 'password' ? 'text' : 'password';
+  btn.textContent = el.type === 'password' ? 'Ver clave' : 'Ocultar clave';
+}
+function togglePassAll(btn){
+  const show = btn.textContent === 'Ver claves';
+  ['chgOld','chgA','chgB'].forEach(id => { document.getElementById(id).type = show ? 'text' : 'password'; });
+  btn.textContent = show ? 'Ocultar claves' : 'Ver claves';
+}
+document.addEventListener('keydown', e => {
+  const on = !!(e.getModifierState && e.getModifierState('CapsLock'));
+  const w = document.getElementById('capsWarn'); if (w) w.style.display = on ? '' : 'none';
+  const c = document.getElementById('chgCaps'); if (c) c.style.display = on ? '' : 'none';
+});
+
 /* ---------- Usuario ---------- */
 function openUser(){ $('uName').value = user; dlgUser.showModal(); }
 function saveUser(){
@@ -2664,43 +2727,5 @@ function saveUser(){
   render(); showAlerts();
 })();
 </script>
-<script>
-(function(){
-  function wrap(inp){
-    if (inp.dataset.pw) return;
-    inp.dataset.pw = '1';
-    const w = document.createElement('div');
-    w.className = 'pw-wrap';
-    inp.parentNode.insertBefore(w, inp);
-    w.appendChild(inp);
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'pw-eye';
-    b.textContent = '👁';
-    b.onclick = () => {
-      const mostrar = inp.type === 'password';
-      inp.type = mostrar ? 'text' : 'password';
-      b.textContent = mostrar ? '🙈' : '👁';
-    };
-    w.appendChild(b);
-  }
-  function scan(){
-    document.querySelectorAll('input[type=password]').forEach(wrap);
-    const chg = document.getElementById('chg');
-    if (chg && !chg.querySelector('.salir')){
-      const card = chg.firstElementChild;
-      const b = document.createElement('button');
-      b.className = 'btn alt salir';
-      b.textContent = 'Salir (volver al ingreso)';
-      b.style.cssText = 'width:100%;margin-top:8px';
-      b.onclick = () => logout();
-      card.appendChild(b);
-    }
-  }
-  scan();
-  new MutationObserver(scan).observe(document.body, {childList: true, subtree: true});
-})();
-</script>
-
 </body>
 </html>
