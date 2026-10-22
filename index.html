@@ -161,7 +161,7 @@ header{padding-top:calc(env(safe-area-inset-top,0px) + 10px);padding-bottom:10px
 #labList .muted{font-size:13px}
 #labW,#labH,#labCopies{font-size:16px}
 /* MAYUSCULAS */
-input,textarea{text-transform:uppercase}
+input,textarea{text-transform:none}
 input::placeholder,textarea::placeholder{text-transform:none}
 .title,.size .name,.pill,td b,.alertrow b,.mv b,.muted b,.name{text-transform:uppercase}
 /* PROFESIONAL */
@@ -286,7 +286,7 @@ input[type=password],#lockMail,#chgOld{text-transform:none !important}
     <div style="font-weight:700;font-size:20px;margin-bottom:4px">Inventario</div>
     <div class="muted" style="margin-bottom:14px">Inicia sesión con tu usuario y tu clave</div>
     <input id="lockMail" type="text" placeholder="Usuario (ej: renato)" autocomplete="username" autocapitalize="none" style="width:100%;margin-bottom:8px">
-    <input id="lockPass" type="password" placeholder="Clave" autocomplete="current-password" style="width:100%" onkeydown="if(event.key==='Enter')unlock()">
+    <input id="lockPass" type="password" placeholder="Clave" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="current-password" style="width:100%" onkeydown="if(event.key==='Enter')unlock()">
     <button class="btn alt" style="width:100%;margin-top:6px" onclick="togglePass(this,'lockPass')">Ver clave</button>
     <div id="capsWarn" style="display:none;color:#B7791F;font-weight:700;margin-top:6px">⚠ Bloq Mayús está activado: la clave distingue mayúsculas.</div>
     <div id="lockMsg" class="muted" style="color:#FF3B30;min-height:20px;margin-top:6px"></div>
@@ -298,9 +298,9 @@ input[type=password],#lockMail,#chgOld{text-transform:none !important}
   <div style="background:#fff;border-radius:20px;padding:24px;width:min(92vw,360px);box-shadow:0 8px 30px rgba(0,0,0,.12)">
     <div style="font-weight:700;font-size:20px;margin-bottom:4px">Elige tu clave</div>
     <div class="muted" style="margin-bottom:14px">Tu clave temporal ya no sirve. Elige una clave tuya (mínimo 6 caracteres).</div>
-    <input id="chgOld" type="password" placeholder="Clave actual" autocomplete="current-password" style="width:100%;margin-bottom:8px">
-    <input id="chgA" type="password" placeholder="Clave nueva" autocomplete="new-password" style="width:100%;margin-bottom:8px">
-    <input id="chgB" type="password" placeholder="Repite la clave nueva" autocomplete="new-password" style="width:100%">
+    <input id="chgOld" type="password" placeholder="Clave actual" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="current-password" style="width:100%;margin-bottom:8px">
+    <input id="chgA" type="password" placeholder="Clave nueva" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="new-password" style="width:100%;margin-bottom:8px">
+    <input id="chgB" type="password" placeholder="Repite la clave nueva" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="new-password" style="width:100%">
     <div id="chgMsg" class="muted" style="color:#FF3B30;min-height:20px;margin-top:6px"></div>
     <button class="btn alt" style="width:100%;margin-top:8px" onclick="togglePassAll(this)">Ver claves</button>
     <div id="chgCaps" style="display:none;color:#B7791F;font-weight:700;margin-top:6px">⚠ Bloq Mayús está activado: la clave distingue mayúsculas.</div>
@@ -606,7 +606,27 @@ let stream = null, detTimer = null;
 /* ---------- Supabase por API directa (sin librerías) ---------- */
 const SB_URL = 'https://selkwbqrharawnpuvray.supabase.co';
 const SB_KEY = 'sb_publishable_VLwDqePG6dnww-g0nHsDtg_ySan2Ja8';
-let synced = {products:new Map(), sizes:new Map(), moves:new Map(), settings:new Map(), invoices:new Map(), orders:new Map()};
+function hsh(s){ let x = 5381; for (let i = 0; i < s.length; i++) x = ((x << 5) + x) ^ s.charCodeAt(i); return (x >>> 0).toString(36); }
+function restoreSynced(){
+  const out = {products:new Map(), sizes:new Map(), moves:new Map(), settings:new Map(), invoices:new Map(), orders:new Map()};
+  try { const raw = JSON.parse(localStorage.getItem('inv-synced') || 'null'); if (raw) Object.keys(raw).forEach(t => { if (out[t]) out[t] = new Map(raw[t]); }); } catch(e){}
+  return out;
+}
+function persistSynced(){
+  const raw = {};
+  Object.keys(synced).forEach(t => { raw[t] = [...synced[t].entries()]; });
+  try { localStorage.setItem('inv-synced', JSON.stringify(raw)); } catch(e){}
+}
+function pendingCount(){
+  const snap = snapshot(); let n = 0;
+  TABLES.forEach(t => {
+    const cur = new Map(snap[t].map(r => [idOf(r), hsh(JSON.stringify(r))]));
+    snap[t].forEach(r => { if (synced[t].get(idOf(r)) !== hsh(JSON.stringify(r))) n++; });
+    [...synced[t].keys()].forEach(id => { if (!cur.has(id)) n++; });
+  });
+  return n;
+}
+let synced = restoreSynced();
 let syncChain = Promise.resolve();
 const TABLES = ['products','sizes','moves','settings','invoices','orders'];
 function newCode(){ return 'P' + Date.now().toString(36).slice(-4).toUpperCase() + Math.random().toString(36).slice(2,4).toUpperCase(); }
@@ -643,7 +663,7 @@ function snapshot(){
 }
 function snapMaps(){
   const snap = snapshot(), out = {};
-  TABLES.forEach(t => { out[t] = new Map(snap[t].map(r => [idOf(r), JSON.stringify(r)])); });
+  TABLES.forEach(t => { out[t] = new Map(snap[t].map(r => [idOf(r), hsh(JSON.stringify(r))])); });
   return out;
 }
 function save(){
@@ -657,7 +677,7 @@ async function syncNow(){
   for (const t of TABLES){
     const cur = new Map(snap[t].map(r => [idOf(r), r]));
     const old = synced[t];
-    const up = plain([...cur.values()].filter(r => old.get(idOf(r)) !== JSON.stringify(r)));
+    const up = plain([...cur.values()].filter(r => old.get(idOf(r)) !== hsh(JSON.stringify(r))));
     const gone = [...old.keys()].filter(id => !cur.has(id));
     if (up.length){
       const q = t === 'settings' ? 'settings?on_conflict=key' : t + '?on_conflict=id';
@@ -667,8 +687,9 @@ async function syncNow(){
       const col = t === 'settings' ? 'key' : 'id';
       await sbReq('DELETE', t + '?' + col + '=in.(' + gone.map(x => encodeURIComponent(x)).join(',') + ')', undefined, 'return=minimal');
     }
-    synced[t] = new Map(snap[t].map(r => [idOf(r), JSON.stringify(r)]));
+    synced[t] = new Map(snap[t].map(r => [idOf(r), hsh(JSON.stringify(r))]));
   }
+  persistSynced();
   setNet('Conectado', true);
 }
 async function loadAll(){
@@ -697,7 +718,7 @@ async function loadAll(){
   db.orders = ov.map(r => Object.assign({id:r.id, number:r.number, client:r.client, date:r.created_at, status:r.status, source:r.source}, (r.data || {})));
   const cl = st.find(x => x.key === 'clientes');
   db.clients = cl && Array.isArray(cl.value) ? cl.value : (db.clients || []);
-  synced = snapMaps();
+  synced = snapMaps(); persistSynced();
   return 'remote';
 }
 /* ---------- Quién está en línea ---------- */
@@ -727,16 +748,29 @@ function uiBusy(){
 function subscribe(){
   document.addEventListener('touchstart', () => { window.lastTouchAt = Date.now(); }, {passive: true});
   document.addEventListener('pointerdown', () => { window.lastTouchAt = Date.now(); }, {passive: true});
-  setInterval(async () => {
-    if (uiBusy()) return;
+  const tick = async () => {
     try {
+      const pend = pendingCount();
+      if (pend > 0){
+        await syncChain;
+        await syncNow();
+        setNet('Conectado', true);
+      }
+      if (uiBusy()) return;
       const before = JSON.stringify(db);
       await syncChain;
+      if (pendingCount() > 0) return;
       await loadAll();
       if (!uiBusy() && JSON.stringify(db) !== before) render();
       await refreshOnline();
-    } catch(e){ console.error('Supabase:', errMsg(e)); }
-  }, 5000);
+    } catch(e){
+      const left = pendingCount();
+      setNet('Sin conexión' + (left ? ' · ' + left + ' cambios por subir' : ''), false);
+    }
+  };
+  setInterval(tick, 5000);
+  window.addEventListener('online', tick);
+  window.addEventListener('offline', () => setNet('Sin conexión · trabajando en este dispositivo', false));
 }
 function uid(){ return Math.random().toString(36).slice(2,9); }
 function pad(n){ return String(n).padStart(2,'0'); }
@@ -1204,7 +1238,7 @@ function matrixBody(){
         const s = r.cells[n];
         if (!s) return '<td class="num muted">—</td>';
         const low = s.min !== null && s.qty <= s.min;
-        return `<td class="num ${low ? 'lowc' : ''} ${s.qty < 0 ? 'down' : ''}" style="cursor:pointer" onclick="openSize('${r.p.id}','${s.id}')">${s.qty}</td>`;
+        return `<td class="num ${low ? 'lowc' : ''} ${s.qty < 0 ? 'down' : ''}" style="cursor:pointer" onclick="openCellEdit('${r.p.id}','${s.id}')">${s.qty}</td>`;
       }).join('')}
       <td class="num"><b>${r.total}</b></td></tr>`).join('')
     : `<tr><td colspan="${names.length + 4}" class="empty">Sin resultados</td></tr>`;
@@ -2695,6 +2729,22 @@ document.addEventListener('keydown', e => {
   const c = document.getElementById('chgCaps'); if (c) c.style.display = on ? '' : 'none';
 });
 
+/* ---------- Cambiar stock desde la tabla ---------- */
+function openCellEdit(pid, sid){
+  const p = findP(pid), s = p && findS(p, sid);
+  if (!s) return;
+  mctx = {mode: 'count', p: p, s: s};
+  $('moveTitle').textContent = p.name + (p.color ? ' · ' + p.color : '') + ' · talla ' + s.name + ' (hoy: ' + s.qty + ')';
+  $('mDeltaBox').style.display = 'none';
+  $('mCountBox').style.display = '';
+  $('mCount').value = s.qty;
+  $('mDel').style.display = 'none';
+  $('reason').value = '';
+  $('mUser').value = user;
+  $('photo').value = '';
+  dlgMove.showModal();
+}
+
 /* ---------- Usuario ---------- */
 function openUser(){ $('uName').value = user; dlgUser.showModal(); }
 function saveUser(){
@@ -2722,7 +2772,7 @@ function saveUser(){
     const msg = (e && (e.message || e.details || e.hint)) || JSON.stringify(e);
     console.error('Supabase:', msg, e);
     setNet('Sin conexión', false);
-    alert('No se pudo conectar con la base de datos. Detalle: ' + msg);
+    setNet('Sin conexión · trabajando en este dispositivo', false);
   }
   render(); showAlerts();
 })();
