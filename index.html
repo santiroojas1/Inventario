@@ -195,7 +195,7 @@ input,textarea,select{border-radius:10px;border:.5px solid #C6C6C8;background:#F
 .chip.on{background:#1C1C1E;color:#fff;border-color:#1C1C1E}
 .fbar select{border-radius:10px}
 .bm-in{color:#34C759;border-color:#34C759}
-.bm-in.on{background:#34C759;color:#fff}
+.bm-in.on{background:#315E68;color:#fff}
 .bm-out{color:#FF3B30;border-color:#FF3B30}
 .bm-out.on{background:#FF3B30;color:#fff}
 .day{background:#F2F2F7;color:#1C1C1E;border-radius:10px}
@@ -221,20 +221,20 @@ dialog .title{font-size:17px}
 /* JERARQUIA */
 .toolbar{margin:12px auto 0;padding:0 14px;gap:10px}
 .status-row{display:flex;gap:12px;justify-content:center;font-size:13px;font-weight:700;flex-wrap:wrap}
-.big-add{background:#34C759;color:#fff;font-size:18px;min-height:54px;border-radius:14px;box-shadow:0 2px 6px rgba(52,199,89,.35)}
+.big-add{background:#315E68;color:#fff;font-size:18px;min-height:54px;border-radius:14px;box-shadow:0 2px 6px rgba(52,199,89,.35)}
 .tools{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%}
 .tb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:none;border-radius:14px;padding:10px 4px;min-height:70px;color:#fff;font:inherit;font-weight:700;font-size:13px;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,.12)}
 .tb .ico{font-size:22px;line-height:1}
-.t-count{background:#30B0C7}
-.t-print{background:#AF52DE}
+.t-count{background:#315E68}
+.t-print{background:#315E68}
 .t-alert{background:#FF3B30}
-.t-more{background:#636366}
+.t-more{background:#315E68}
 .card .btn.alt{font-weight:700}
 .card .row .btn.alt:first-child{background:#E8F8EC;color:#1E7A3A}
 .card .row .btn.alt:last-child{background:#F2F2F7;color:#1C1C1E}
 .title{font-size:18px}
 .chip.on{background:#1C1C1E}
-.day.sel{background:#34C759;color:#fff}
+.day.sel{background:#315E68;color:#fff}
 .day.sel .dot{background:#fff;color:#1C1C1E}
 dialog .btn{min-height:48px}
 /* CODIGO TEXTO */
@@ -248,6 +248,65 @@ input[type=password],#lockMail,#chgOld{text-transform:none !important}
 .sem-ok{background:#E8F8EC;color:#1E7A3A}
 .sem-warn{background:#FFF3CD;color:#7A5A00}
 .sem-bad{background:#FFE5E5;color:#B00020}
+/* DISEÑO GENERAL */
+:root{--bg:#F5F5F7;--card:#FFFFFF;--line:#D2D2D7;--ink:#1D1D1F;--mute:#6E6E73;--pet:#315E68;--ok:#2E7D4F;--warn:#B7791F;--bad:#C62828}
+body{background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;font-size:16px;font-weight:400}
+header{background:var(--bg);border-bottom:.5px solid var(--line);box-shadow:none;padding:10px 14px;gap:8px}
+.brand{font-size:20px;font-weight:600;color:var(--ink)}
+.tabs{background:#E8E8ED;border-radius:10px;padding:3px;display:flex;gap:2px;width:100%;overflow-x:auto;flex-wrap:nowrap}
+.tabs button{background:transparent;color:var(--ink);font-weight:500;font-size:14px;border-radius:8px;padding:6px 12px;white-space:nowrap;flex:0 0 auto}
+.tabs button.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08);font-weight:600}
+.banner{background:#fff;border-bottom:.5px solid var(--line);padding:4px 0}
+.banner img{width:100%;max-width:none;height:44px;object-fit:contain}
+main{max-width:820px;margin:0 auto;padding:14px}
+.card{background:var(--card);border:.5px solid var(--line);border-radius:14px;box-shadow:none;padding:16px;margin-bottom:12px}
+.btn{background:var(--pet);color:#fff;border:0;border-radius:10px;font-weight:500;font-size:16px;min-height:44px;padding:10px 16px}
+.btn.alt{background:#fff;color:var(--ink);border:.5px solid var(--line);box-shadow:none}
+.btn.bad{background:#fff;color:var(--bad);border:.5px solid var(--line)}
+.btn.sm{width:40px;height:40px;min-height:40px;border-radius:50%;font-size:18px;padding:0}
+.btn.sm2{min-height:36px;padding:6px 12px;font-size:14px}
+.big-add{width:100%;max-width:none;min-height:50px;font-size:17px;font-weight:500;border-radius:12px}
+.toolbar{max-width:820px;margin:12px auto 0;padding:0 14px;gap:10px}
+.tools{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%}
+.tb{background:#fff;color:var(--ink);border:.5px solid var(--line);box-shadow:none;min-height:64px;border-radius:12px;font-weight:500;font-size:13px}
+.ic{display:inline-flex;color:var(--pet);vertical-align:middle}
+.tb .ic{color:var(--pet)}
+.title{font-size:17px;font-weight:600;color:var(--ink)}
+.muted{color:var(--mute)}
+.pill{background:#F0F0F3;color:var(--mute);border-radius:999px;font-weight:500}
+.low-pill{background:var(--bad);color:#fff}
+.sem-ok{background:#E7F4EC;color:var(--ok)}
+.sem-warn{background:#FBF1DE;color:var(--warn)}
+.sem-bad{background:#FBE7E7;color:var(--bad)}
+.chip{border:.5px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);font-weight:500}
+.chip.on{background:var(--pet);color:#fff;border-color:var(--pet)}
+input,select,textarea{border:.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+.size{border-top:.5px solid var(--line)}
+.alertrow{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:.5px solid var(--line)}
+.alertrow > div:nth-child(2){flex:1}
+.alert-l{width:4px;align-self:stretch;border-radius:2px}
+.alert-l.warn{background:var(--warn)}
+.alert-l.bad{background:var(--bad)}
+.alert-h{font-weight:600;margin:12px 0 4px}
+.lab-p{font-weight:600;margin-top:10px}
+.lab-s{display:flex;gap:8px;align-items:center;padding:6px 0;font-size:15px}
+table.xl th,table.xl td{border-right:.5px solid var(--line);border-bottom:.5px solid var(--line)}
+table.xl .hd th{background:#F5F5F7;color:var(--ink);box-shadow:inset 0 -1px 0 var(--line)}
+table.xl td.missing{color:var(--mute);cursor:pointer;background:#FBFBFD}
+table.xl td.lowc{background:#FBF1DE}
+.day.sel{background:var(--pet);color:#fff}
+.day .dot{background:var(--pet);color:#fff}
+@media (min-width:900px){
+  main,.toolbar{max-width:1100px}
+  #plist{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+  #plist > .muted{grid-column:1/-1}
+  .tools{grid-template-columns:repeat(4,160px);justify-content:center}
+}
+@media (max-width:480px){
+  .big-add{font-size:16px}
+  .tb{font-size:12px;min-height:60px}
+  .tabs button{font-size:13px;padding:6px 9px}
+}
 </style>
 </head>
 <body>
@@ -265,17 +324,17 @@ input[type=password],#lockMail,#chgOld{text-transform:none !important}
   </div>
 </header>
 <div class="toolbar">
-  <div class="row" style="gap:8px;width:100%"><button class="btn big-add" style="flex:1" onclick="openProduct()">＋ Agregar producto</button><button class="btn big-add" style="flex:1;background:#5856D6" onclick="openInvPhoto()">🧾 Cargar factura</button></div>
+  <div class="row" style="gap:8px;width:100%"><button class="btn big-add" style="flex:1" onclick="openProduct()">+ Agregar producto</button><button class="btn big-add" style="flex:1;background:#315E68" onclick="openInvPhoto()"><span class="ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></span> Cargar factura</button></div>
   <div class="status-row">
     <span id="online"></span>
     <span id="space" class="muted" style="font-weight:700"></span>
     <span id="netState"></span>
   </div>
   <div class="tools">
-        <button class="tb t-count" onclick="openCountDialog()"><span class="ico">📋</span><span>Conteo físico</span></button>
-    <button class="tb t-print" onclick="openLabelsDialog()"><span class="ico">🏷️</span><span>Etiquetas</span></button>
-    <button class="tb t-alert" id="bell" onclick="openAlerts()"><span class="ico">🔔</span><span>Alertas 0</span></button>
-    <button class="tb t-more" onclick="openMore()"><span class="ico">⋯</span><span>Más</span></button>
+        <button class="tb t-count" onclick="openCountDialog()"><span class="ico"><span class="ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M9 11h6M9 15h6"/></svg></span></span><span>Conteo físico</span></button>
+    <button class="tb t-print" onclick="openLabelsDialog()"><span class="ico"><span class="ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="7.5" cy="8.5" r="1.2"/></svg></span></span><span>Etiquetas</span></button>
+    <button class="tb t-alert" id="bell" onclick="openAlerts()"><span class="ico"><span class="ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg></span></span><span>Alertas 0</span></button>
+    <button class="tb t-more" onclick="openMore()"><span class="ico"><span class="ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg></span></span><span>Más</span></button>
   </div>
 </div>
 <main id="main"></main>
@@ -288,7 +347,7 @@ input[type=password],#lockMail,#chgOld{text-transform:none !important}
     <input id="lockMail" type="text" placeholder="Usuario (ej: renato)" autocomplete="username" autocapitalize="none" style="width:100%;margin-bottom:8px">
     <input id="lockPass" type="password" placeholder="Clave" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="current-password" style="width:100%" onkeydown="if(event.key==='Enter')unlock()">
     <button class="btn alt" style="width:100%;margin-top:6px" onclick="togglePass(this,'lockPass')">Ver clave</button>
-    <div id="capsWarn" style="display:none;color:#B7791F;font-weight:700;margin-top:6px">⚠ Bloq Mayús está activado: la clave distingue mayúsculas.</div>
+    <div id="capsWarn" style="display:none;color:#B7791F;font-weight:700;margin-top:6px">Bloq Mayús está activado: la clave distingue mayúsculas.</div>
     <div id="lockMsg" class="muted" style="color:#FF3B30;min-height:20px;margin-top:6px"></div>
     <button class="btn" style="width:100%;margin-top:8px" onclick="unlock()">Entrar</button>
     <button class="btn alt" style="width:100%;margin-top:8px" onclick="logout()">Entrar con otro usuario</button>
@@ -303,7 +362,7 @@ input[type=password],#lockMail,#chgOld{text-transform:none !important}
     <input id="chgB" type="password" placeholder="Repite la clave nueva" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="new-password" style="width:100%">
     <div id="chgMsg" class="muted" style="color:#FF3B30;min-height:20px;margin-top:6px"></div>
     <button class="btn alt" style="width:100%;margin-top:8px" onclick="togglePassAll(this)">Ver claves</button>
-    <div id="chgCaps" style="display:none;color:#B7791F;font-weight:700;margin-top:6px">⚠ Bloq Mayús está activado: la clave distingue mayúsculas.</div>
+    <div id="chgCaps" style="display:none;color:#B7791F;font-weight:700;margin-top:6px">Bloq Mayús está activado: la clave distingue mayúsculas.</div>
     <button class="btn" style="width:100%;margin-top:8px" onclick="chgSave()">Guardar mi clave</button>
     <button class="btn alt" style="width:100%;margin-top:8px" onclick="logout()">Entrar con otro usuario</button>
     <button class="btn alt" id="chgCancel" style="width:100%;margin-top:8px" onclick="document.getElementById('chg').style.display='none'">Cancelar</button>
@@ -339,7 +398,7 @@ input[type=password],#lockMail,#chgOld{text-transform:none !important}
     <datalist id="bodegaList"></datalist>
     <label class="muted" id="pPhotoLbl">Foto del producto (obligatoria)</label>
     <img id="pPrev" class="prev" style="display:none" alt="">
-    <label class="filebtn">📷 Tomar o elegir foto<input id="pPhotoIn" type="file" accept="image/*"></label>
+    <label class="filebtn"><span class="ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span> Tomar o elegir foto<input id="pPhotoIn" type="file" accept="image/*"></label>
     <div class="row between wrap">
       <button class="btn bad" id="pDel" onclick="deleteProduct()">Eliminar</button>
       <div class="row"><button class="btn alt" onclick="dlgProd.close()">Cancelar</button><button class="btn" onclick="saveProduct()">Guardar</button></div>
@@ -381,10 +440,11 @@ input[type=password],#lockMail,#chgOld{text-transform:none !important}
       <label class="muted">Cantidad contada</label>
       <input id="mCount" type="number" min="0">
     </div>
+    <div id="motivoAsk" style="display:none;background:#F5F5F7;border-radius:10px;padding:10px"><div id="motivoTxt" style="font-weight:500;margin-bottom:8px"></div><div class="row" style="gap:8px"><button class="btn" style="flex:1" onclick="motivoSi('reason','motivoAsk')">Sí, el mismo</button><button class="btn alt" style="flex:1" onclick="motivoNo('reason','motivoAsk')">No, otro motivo</button></div></div>
     <textarea id="reason" rows="3" placeholder="Motivo (ej: factura 1234, confección, venta, devolución...)"></textarea>
     <input id="mUser" placeholder="¿Quién hace el cambio?">
     <label class="muted">Foto de respaldo: factura, despacho o salida de bodega (opcional)</label>
-    <label class="filebtn">📷 Tomar o elegir foto (opcional)<input id="photo" type="file" accept="image/*"></label>
+    <label class="filebtn"><span class="ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span> Tomar o elegir foto (opcional)<input id="photo" type="file" accept="image/*"></label>
     <div class="row between wrap">
       <button class="btn bad" id="mDel" style="display:none" onclick="deleteMove()">Eliminar movimiento</button>
       <div class="row"><button class="btn alt" onclick="cancelMove()">Cancelar</button><button class="btn" onclick="confirmMove()">Confirmar</button></div>
@@ -395,12 +455,13 @@ input[type=password],#lockMail,#chgOld{text-transform:none !important}
 <dialog id="dlgBatch">
   <div class="stack">
     <div class="title" id="batchTitle">Lote</div>
-    <div class="row wrap bm-row"><button class="bm bm-in on" data-m="in" onclick="setBatchMode('in')">⬇ Entrada (suma)</button><button class="bm bm-out" data-m="out" onclick="setBatchMode('out')">⬆ Salida (resta)</button></div><div class="muted">Elige Entrada o Salida y escribe solo el número de cada talla. La app pone el signo. Lo vacío no cambia.</div>
+    <div class="row wrap bm-row"><button class="bm bm-in on" data-m="in" onclick="setBatchMode('in')"> Entrada (suma)</button><button class="bm bm-out" data-m="out" onclick="setBatchMode('out')"> Salida (resta)</button></div><div class="muted">Elige Entrada o Salida y escribe solo el número de cada talla. La app pone el signo. Lo vacío no cambia.</div>
     <div id="batchRows" style="max-height:40vh;overflow:auto"></div>
+    <div id="motivoAskB" style="display:none;background:#F5F5F7;border-radius:10px;padding:10px"><div id="motivoTxtB" style="font-weight:500;margin-bottom:8px"></div><div class="row" style="gap:8px"><button class="btn" style="flex:1" onclick="motivoSi('batchReason','motivoAskB')">Sí, el mismo</button><button class="btn alt" style="flex:1" onclick="motivoNo('batchReason','motivoAskB')">No, otro motivo</button></div></div>
     <textarea id="batchReason" rows="2" placeholder="Motivo (ej: factura 1234, despacho...)"></textarea>
     <input id="batchUser" placeholder="¿Quién hace el cambio?">
     <label class="muted">Foto de respaldo (opcional, se guarda una vez para todo el lote)</label>
-    <label class="filebtn">📷 Tomar o elegir foto (opcional)<input id="batchPhoto" type="file" accept="image/*"></label>
+    <label class="filebtn"><span class="ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span> Tomar o elegir foto (opcional)<input id="batchPhoto" type="file" accept="image/*"></label>
     <div class="row" style="justify-content:flex-end"><button class="btn alt" onclick="dlgBatch.close()">Cancelar</button><button class="btn" onclick="confirmBatch()">Confirmar</button></div>
   </div>
 </dialog>
@@ -422,7 +483,7 @@ input[type=password],#lockMail,#chgOld{text-transform:none !important}
       <input id="scanCode" placeholder="O escribe o escanea el código aquí">
       <button class="btn" onclick="found(document.getElementById('scanCode').value)">Buscar</button>
     </div>
-    <label class="filebtn">📷 Leer desde foto<input id="scanPhoto" type="file" accept="image/*" capture="environment"></label>
+    <label class="filebtn"><span class="ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span> Leer desde foto<input id="scanPhoto" type="file" accept="image/*" capture="environment"></label>
     <div class="row" style="justify-content:flex-end"><button class="btn alt" onclick="dlgScan.close()">Cerrar</button></div>
   </div>
 </dialog>
@@ -473,7 +534,7 @@ input[type=password],#lockMail,#chgOld{text-transform:none !important}
     <div id="ccRows" style="max-height:38vh;overflow:auto"></div>
     <textarea id="ccReason" rows="2" placeholder="Motivo de la diferencia (obligatorio si hay diferencias)"></textarea>
     <input id="ccUser" placeholder="¿Quién cuenta?">
-    <label class="filebtn">📷 Tomar foto de evidencia (obligatoria)<input id="ccPhoto" type="file" accept="image/*" capture="environment"></label>
+    <label class="filebtn"><span class="ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span> Tomar foto de evidencia (obligatoria)<input id="ccPhoto" type="file" accept="image/*" capture="environment"></label>
     <div id="ccPhotoOk" class="muted"></div>
     <div class="row" style="justify-content:flex-end">
       <button class="btn alt" onclick="dlgCount.close()">Cancelar</button>
@@ -487,7 +548,7 @@ input[type=password],#lockMail,#chgOld{text-transform:none !important}
     <div class="title">Factura</div>
     <div id="invMsg" class="help">Toma la foto de la factura.</div>
     <details><summary class="muted">Ver texto leído del PDF</summary><pre id="invRaw" style="white-space:pre-wrap;font-size:12px;max-height:30vh;overflow:auto"></pre></details>
-    <label class="filebtn">📄 Elegir factura en PDF (recomendado)<input id="invFile" type="file" accept="application/pdf,image/*"></label>
+    <label class="filebtn"><span class="ic"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/></svg></span> Elegir factura en PDF (recomendado)<input id="invFile" type="file" accept="application/pdf,image/*"></label>
     <input id="invNum" placeholder="N° de factura">
     <input id="invUser" placeholder="¿Quién carga la factura?">
     <div id="invLines" style="max-height:44vh;overflow:auto"></div>
@@ -557,9 +618,10 @@ input[type=password],#lockMail,#chgOld{text-transform:none !important}
   <div class="stack">
     <div class="title">Imprimir etiquetas</div>
     <div class="row wrap">
-      <button class="btn alt" onclick="labAll(true)">Seleccionar todo</button>
+      <button class="btn alt" onclick="labAll(true)">Seleccionar visibles</button>
       <button class="btn alt" onclick="labAll(false)">Ninguno</button>
     </div>
+    <input id="labSearch" type="search" placeholder="Buscar producto, color o talla" oninput="labQuery=this.value;renderLabPicker()" style="margin-bottom:6px">
     <div id="labList" style="max-height:36vh;overflow:auto;border:1px solid #ddd;border-radius:8px;padding:8px"></div>
     <div class="row wrap">
       <div style="flex:1;min-width:100px"><label class="muted">Ancho (mm)</label><input id="labW" type="number" value="110" disabled oninput="updLabSummary()"></div>
@@ -823,23 +885,14 @@ function setView(v){
   if (v === 'cal'){ calMonth = new Date(); selDay = dayKey(new Date()); }
   render();
 }
-function updBell(){
-  const n = lowSizes().length, b = $('bell');
-  b.innerHTML = '<span class="ico">🔔</span><span>Alertas ' + n + '</span>';
-  b.style.background = n ? 'var(--bad)' : '';
-  b.style.color = n ? '#fff' : '';
-}
-function alertHTML(){
-  const low = lowSizes();
-  if (!low.length) return '<div class="muted">No hay tallas bajo aviso.</div>';
-  return low.map(({p, s}) => `<div class="alertrow"><b>${esc(p.name)}</b> · talla ${esc(s.name)}<div class="muted">Quedan ${s.qty} (aviso en ${s.min})</div><button class="btn alt" style="margin-top:6px;padding:5px 10px" onclick="dlgAlert.close();openSize('${p.id}','${s.id}')">Reponer</button></div>`).join('');
-}
+
+
 function openAlerts(){ $('alertBody').innerHTML = alertHTML(); dlgAlert.showModal(); }
-function showAlerts(){ if (lowSizes().length) openAlerts(); }
+
 
 /* ---------- Productos ---------- */
 function prodView(){
-  return `<div class="help">Toca un número para cambiarlo. Usa + para sumar y − para restar.</div><div class="row" style="margin-bottom:12px"><input class="search" style="max-width:100%" type="search" placeholder="🔍 Buscar por nombre o código" value="${esc(prodQ)}" oninput="prodQ=this.value;prodBody()"></div><div id="plist"></div>`;
+  return `<div class="help">Toca un número para cambiarlo. Usa + para sumar y − para restar.</div><div class="row" style="margin-bottom:12px"><input class="search" style="max-width:100%" type="search" placeholder="Buscar por nombre o código" value="${esc(prodQ)}" oninput="prodQ=this.value;prodBody()"></div><div id="plist"></div>`;
 }
 function normName(s){ return norm(s).replace(/[^a-z0-9]+/g, ' ').trim().toUpperCase(); }
 let colorSel = {};
@@ -1024,7 +1077,7 @@ function openCount(p, s){
   $('mCount').value = s.qty;
   $('mDel').style.display = 'none';
   resetMoveForm('Conteo físico');
-  dlgMove.showModal();
+  dlgMove.showModal(); askMotivo();
 }
 
 /* ---------- Movimientos de stock ---------- */
@@ -1042,7 +1095,7 @@ function requestChange(p, s, newQty){
   $('mCountBox').style.display = 'none';
   $('mDel').style.display = 'none';
   resetMoveForm();
-  dlgMove.showModal();
+  dlgMove.showModal(); askMotivo();
 }
 function openEditMove(id){
   const m = db.moves.find(x => x.id === id); if (!m) return;
@@ -1057,7 +1110,7 @@ function openEditMove(id){
   $('reason').value = m.reason;
   $('mUser').value = m.user || user;
   $('photo').value = '';
-  dlgMove.showModal();
+  dlgMove.showModal(); askMotivo();
 }
 function cancelMove(){ mctx = null; dlgMove.close(); render(); }
 async function confirmMove(){
@@ -1065,6 +1118,7 @@ async function confirmMove(){
   if (!reason) return alert('Falta el motivo. Escribe por qué cambió el stock, por ejemplo: factura 1234.');
   const who = $('mUser').value.trim().toUpperCase();
   if (!who) return alert('Falta tu nombre. Escribe quién hace el cambio.');
+  window.lastMotive = {reason: reason, user: who, at: Date.now()};
   const file = $('photo').files[0];
   const photo = file ? await shrink(file) : null;
   if (mctx.mode === 'edit'){
@@ -1107,13 +1161,14 @@ function openBatch(pid){
   $('batchUser').value = user;
   $('batchPhoto').value = '';
   setBatchMode('in');
-  dlgBatch.showModal();
+  dlgBatch.showModal(); askMotivoB();
 }
 async function confirmBatch(){
   const reason = $('batchReason').value.trim().toUpperCase();
   if (!reason) return alert('Falta el motivo. Escribe por qué cambió el stock, por ejemplo: factura 1234.');
   const who = $('batchUser').value.trim().toUpperCase();
   if (!who) return alert('Falta tu nombre. Escribe quién hace el cambio.');
+  window.lastMotive = {reason: reason, user: who, at: Date.now()};
   const p = findP(batchPid);
   const changes = [...document.querySelectorAll('#batchRows input[data-sid]')]
     .map(i => ({s: findS(p, i.dataset.sid), d: (batchMode === 'out' ? -1 : 1) * Math.abs(parseInt(i.value))}))
@@ -1190,37 +1245,28 @@ function shiftMonth(n){ calMonth = new Date(calMonth.getFullYear(), calMonth.get
 function selectDay(k){ selDay = k; render(); }
 
 /* ---------- Tabla: productos en filas, tallas en columnas ---------- */
-function matrixView(){
-  const names = matrixNames();
-  const letters = names.map((n, i) => `<th>${String.fromCharCode(67 + i)}</th>`).join('');
-  const heads = names.map(n => mth('sz:' + n, 'Talla ' + n, 'num')).join('');
-  return `<div class="card">
-    <div class="row between wrap" style="margin-bottom:12px">
-      <input class="search" type="search" placeholder="🔍 Buscar por nombre o código" value="${esc(filt)}" oninput="filt=this.value;matrixBody()">
-      <button class="btn alt" onclick="exportMatrixCsv()">Exportar a Excel (CSV)</button>
-    </div>
-    <div class="scroll"><table class="xl">
-      <thead>
-        <tr class="cl"><th class="rn"></th><th>A</th><th>B</th>${letters}<th>${String.fromCharCode(67 + names.length)}</th></tr>
-        <tr class="hd"><th class="rn">#</th>${mth('product','Producto')}${mth('code','Código')}${heads}${mth('total','Total','num')}</tr>
-      </thead>
-      <tbody id="mbody"></tbody>
-    </table></div>
-    <div class="muted" style="margin-top:8px">Cada fila es un producto y cada columna una talla. Las celdas amarillas están en o bajo su aviso. Toca una celda para editar esa talla.</div>
-  </div>`;
-}
+
 function mth(k, label, cls){
   const arrow = sortKey === k ? (sortDir > 0 ? ' ▲' : ' ▼') : '';
   return `<th class="${cls || ''}" onclick="sortBy('${k}')">${label}${arrow}</th>`;
 }
 function sortBy(k){ if (sortKey === k) sortDir = -sortDir; else { sortKey = k; sortDir = 1; } render(); }
+let matColor = '', matGen = '';
+function idKey(p){ return normName(p.name) + '|' + (p.color || '') + '|' + (p.genero || '') + '|' + (p.bodega || 'GENERAL'); }
 function matrixRows(){
+  const dupCount = {};
+  db.products.forEach(p => { const k = idKey(p); dupCount[k] = (dupCount[k] || 0) + 1; });
   const rows = db.products.map(p => {
     const cells = {}; p.sizes.forEach(s => { cells[s.name] = s; });
-    return {p, cells, total: p.sizes.reduce((a, s) => a + s.qty, 0)};
-  }).filter(r => prodPasses(r.p) && norm(r.p.name + ' ' + r.p.code + ' ' + r.p.sizes.map(s => s.bc).join(' ')).includes(norm(filt)));
+    return {p: p, cells: cells, total: p.sizes.reduce((a, s) => a + s.qty, 0), dup: dupCount[idKey(p)] > 1};
+  }).filter(r => norm(r.p.name + ' ' + r.p.code + ' ' + (r.p.color || '') + ' ' + (r.p.genero || '') + ' ' + (r.p.bodega || '')).includes(norm(filt)))
+    .filter(r => !matColor || (r.p.color || '') === matColor)
+    .filter(r => !matGen || (r.p.genero || '') === matGen);
   const keyOf = r => {
     if (sortKey === 'product') return norm(r.p.name);
+    if (sortKey === 'color') return norm(r.p.color || '');
+    if (sortKey === 'genero') return norm(r.p.genero || '');
+    if (sortKey === 'bodega') return norm(r.p.bodega || '');
     if (sortKey === 'code') return norm(r.p.code);
     if (sortKey === 'total') return r.total;
     if (sortKey.startsWith('sz:')){ const s = r.cells[sortKey.slice(3)]; return s ? s.qty : -1e9; }
@@ -1228,21 +1274,8 @@ function matrixRows(){
   };
   return rows.sort((a, b) => { const x = keyOf(a), y = keyOf(b); return (x > y ? 1 : x < y ? -1 : 0) * sortDir; });
 }
-function matrixBody(){
-  const tb = $('mbody'); if (!tb) return;
-  const names = matrixNames(), rows = matrixRows();
-  tb.innerHTML = rows.length ? rows.map((r, i) => `<tr>
-      <td class="rn">${i + 1}</td>
-      <td><b>${esc(r.p.name)}</b></td><td>${esc(r.p.code)}</td>
-      ${names.map(n => {
-        const s = r.cells[n];
-        if (!s) return '<td class="num muted">—</td>';
-        const low = s.min !== null && s.qty <= s.min;
-        return `<td class="num ${low ? 'lowc' : ''} ${s.qty < 0 ? 'down' : ''}" style="cursor:pointer" onclick="openCellEdit('${r.p.id}','${s.id}')">${s.qty}</td>`;
-      }).join('')}
-      <td class="num"><b>${r.total}</b></td></tr>`).join('')
-    : `<tr><td colspan="${names.length + 4}" class="empty">Sin resultados</td></tr>`;
-}
+
+
 function exportMatrixCsv(){
   const q = String.fromCharCode(34), names = matrixNames();
   const head = ['Producto', 'Código', ...names.map(n => 'Talla ' + n), 'Total'];
@@ -1263,7 +1296,7 @@ function histView(){
   return `<div class="card">
     
     <div class="row wrap" style="margin-bottom:10px">
-      <input placeholder="🔍 Producto (ej: delantal)" value="${esc(histF.prod)}" oninput="histF.prod=this.value;histBody()" style="flex:2;min-width:140px">
+      <input placeholder="Producto (ej: delantal)" value="${esc(histF.prod)}" oninput="histF.prod=this.value;histBody()" style="flex:2;min-width:140px">
       <select onchange="histF.size=this.value;histBody()" style="flex:1;min-width:100px"><option value="">Todas las tallas</option>${names.map(n => `<option value="${esc(n)}" ${histF.size === n ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select>
       <select onchange="histF.user=this.value;histBody()" style="flex:1;min-width:100px"><option value="">Todos</option>${users.map(u => `<option value="${esc(u)}" ${histF.user === u ? 'selected' : ''}>${esc(u)}</option>`).join('')}</select>
       <button class="btn alt" onclick="exportHist()">Exportar CSV</button>
@@ -1423,30 +1456,11 @@ function updLabSummary(){
   $('printBtn').textContent = n ? 'Descargar ' + n + ' etiquetas para imprimir' : 'Descargar para imprimir';
   $('labSummary').textContent = `${L.per} etiquetas por hoja (${L.cols} × ${L.rows}) · ${n} etiquetas · ${sheets} hoja(s)`;
 }
-function openLabelsDialog(preSid){
-  if (typeof JsBarcode === 'undefined') return alert('No se cargó el generador de códigos. Revisa la conexión.');
-  if (!allSizes().length) return alert('No hay tallas para etiquetar.');
-  labSel = new Set(preSid ? [preSid] : allSizes().map(({s}) => s.id));
-  renderLabPicker();
-  dlgLabels.showModal();
-}
-function renderLabPicker(){
-  let h = '';
-  db.products.forEach(p => {
-    if (!p.sizes.length) return;
-    const n = p.sizes.filter(s => labSel.has(s.id)).length;
-    h += `<div style="padding:6px 0;border-bottom:1px solid #eee"><label class="row"><input type="checkbox" style="width:auto" ${n === p.sizes.length ? 'checked' : ''} onchange="toggleProd('${p.id}',this.checked)"> <b>${esc(p.name)}</b> <span class="muted">${n}/${p.sizes.length}</span></label>`;
-    p.sizes.forEach(s => {
-      h += `<label class="row" style="padding-left:24px"><input type="checkbox" style="width:auto" ${labSel.has(s.id) ? 'checked' : ''} onchange="toggleSize('${s.id}',this.checked)"> Talla ${esc(s.name)} <span class="muted">${esc(s.bc)} · stock ${s.qty}</span></label>`;
-    });
-    h += '</div>';
-  });
-  $('labList').innerHTML = h;
-  updLabSummary();
-}
+
+
 function toggleProd(pid, on){ findP(pid).sizes.forEach(s => on ? labSel.add(s.id) : labSel.delete(s.id)); renderLabPicker(); }
 function toggleSize(sid, on){ on ? labSel.add(sid) : labSel.delete(sid); renderLabPicker(); }
-function labAll(on){ allSizes().forEach(({s}) => on ? labSel.add(s.id) : labSel.delete(s.id)); renderLabPicker(); }
+
 function printLabels(){
   const items = labItems();
   if (!items.length) return alert('Falta elegir. Marca al menos una talla para imprimir.');
@@ -1500,7 +1514,7 @@ function cmpSize(a, b){
   return 0;
 }
 function sortedSizes(p){ return p.sizes.slice().sort((a, b) => cmpSize(a.name, b.name)); }
-function matrixNames(){ return fF.size ? [fF.size] : sizeNames(); }
+
 function stOk(s){
   if (fF.st === 'low') return s.min !== null && s.qty <= s.min;
   if (fF.st === 'zero') return s.qty === 0;
@@ -1690,7 +1704,7 @@ function updDiff(){
 $('ccPhoto').addEventListener('change', async (e) => {
   const f = e.target.files[0]; if (!f) return;
   ccPhotoData = await shrink(f);
-  $('ccPhotoOk').textContent = ccPhotoData ? 'Foto lista ✓' : 'No se pudo leer la foto. Intenta de nuevo.';
+  $('ccPhotoOk').textContent = ccPhotoData ? 'Foto lista ' : 'No se pudo leer la foto. Intenta de nuevo.';
 });
 async function saveCount(){
   const p = findP($('ccProd').value); if (!p) return;
@@ -1914,7 +1928,7 @@ function genExpand(rows){
   rows.forEach(r => {
     if (r.pairs.length){
       const sum = r.pairs.reduce((a, b) => a + b.qty, 0);
-      const warn = sum === r.qty ? '' : ' ⚠ suma de tallas (' + sum + ') distinta del total (' + r.qty + ')';
+      const warn = sum === r.qty ? '' : ' suma de tallas (' + sum + ') distinta del total (' + r.qty + ')';
       r.pairs.forEach(p => out.push({name: r.name, qty: p.qty, price: r.price, value: 0, raw: r.name + warn, size: p.size}));
       return;
     }
@@ -2140,7 +2154,7 @@ function factView(){
   const rows = list.map(i => '<div class="mv"><div class="info"><div><b>N° ' + esc(i.number) + '</b> · ' + fmtDate(i.date) + ' · ' + esc(i.user || '') + '</div><div class="muted">' + esc(i.status) + ' · ' + (i.lines || []).length + ' líneas · ' + (i.pending || []).length + ' pendientes' + (i.orderRef ? ' · OC ' + esc(i.orderRef) : '') + '</div></div>' +
     (i.photo ? '<button class="thumb" onclick="invPhoto(\'' + i.id + '\')">' + (i.photo.startsWith('data:application/pdf') ? '<span style="font-size:12px;font-weight:700">PDF</span>' : '<img src="' + i.photo + '" alt="">') + '</button>' : '') +
     (i.status === 'CONFIRMADA' ? '<button class="btn bad" style="padding:6px 10px" onclick="invDelete(\'' + i.id + '\')">Borrar</button>' : '') + '</div>').join('');
-  return '<div class="row wrap" style="margin-bottom:12px;gap:8px"><button class="btn big-add" style="flex:1;background:#5856D6" onclick="openInvPhoto()">🧾 Cargar factura</button><button class="btn alt" style="flex:1" onclick="openInvManual()">Descontar a mano</button></div>' +
+  return '<div class="row wrap" style="margin-bottom:12px;gap:8px"><button class="btn big-add" style="flex:1;background:#315E68" onclick="openInvPhoto()"> Cargar factura</button><button class="btn alt" style="flex:1" onclick="openInvManual()">Descontar a mano</button></div>' +
     '<div class="row wrap" style="margin-bottom:10px;gap:6px">' + ['todas','confirmadas','anuladas'].map(f => '<button class="chip ' + (filt === f ? 'on' : '') + '" onclick="invFilt=\'' + f + '\';render()">' + f.charAt(0).toUpperCase() + f.slice(1) + '</button>').join('') + '</div>' +
     '<div class="card">' + (rows || '<div class="muted">No hay facturas en esta vista.</div>') + '</div>';
 }
@@ -2390,7 +2404,7 @@ function ordView(){
       "<div class='muted'>" + done + " de " + tot + " unidades facturadas · " + esc(o.source || '') + " · " + fmtDate(o.date) + "</div></div>" + acts + "</div>";
   }).join('');
   return "<div class='help'>Recomendado: sube la orden en <b>PDF</b>. Sale más exacta que el Excel.</div>" +
-    "<div class='row wrap' style='margin-bottom:12px;gap:8px'><button class='btn big-add' style='flex:1;background:#5856D6' onclick='ordLoadFile()'>📄 Cargar orden (PDF)</button><button class='btn alt' style='flex:1' onclick='openOrdManual()'>Orden a mano</button></div>" +
+    "<div class='row wrap' style='margin-bottom:12px;gap:8px'><button class='btn big-add' style='flex:1;background:#315E68' onclick='ordLoadFile()'> Cargar orden (PDF)</button><button class='btn alt' style='flex:1' onclick='openOrdManual()'>Orden a mano</button></div>" +
     "<div class='card'>" + (rows || "<div class='muted'>No hay órdenes de compra cargadas.</div>") + "</div>";
 }
 async function ordDeleteOne(id){
@@ -2742,7 +2756,7 @@ function openCellEdit(pid, sid){
   $('reason').value = '';
   $('mUser').value = user;
   $('photo').value = '';
-  dlgMove.showModal();
+  dlgMove.showModal(); askMotivo();
 }
 
 /* ---------- Buscador de productos con lista visible (iPhone, Android, iPad) ---------- */
@@ -2763,6 +2777,144 @@ function renderSug(kind, i, probe, q){
 }
 function invSuggest(i, q){ const l = invDraft.lines[i]; renderSug('inv', i, (l.name || '') + ' ' + (l.raw || ''), q); }
 function ordSuggest(i, q){ const l = ordDraft.lines[i]; renderSug('ord', i, l.desc || '', q); }
+
+const ICONS = {
+  bell: '<path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/>',
+  tag: '<path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="7.5" cy="8.5" r="1.2"/>',
+  camera: '<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
+  receipt: '<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/>',
+  doc: '<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/>',
+  clip: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M9 11h6M9 15h6"/>',
+  dots: '<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>',
+  warn: '<path d="M12 4 2 20h20L12 4z"/><path d="M12 10v5M12 17.5v.01"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>'
+};
+function svgIcon(name, size){ const s = size || 18; return '<svg viewBox="0 0 24 24" width="' + s + '" height="' + s + '" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICONS[name] || '') + '</svg>'; }
+
+let labQuery = '';
+function shortageList(){
+  const out = [];
+  allSizes().forEach(({p, s}) => {
+    const c = committedOf(p.id, s.name);
+    if (c > 0 && s.qty < c){ const short = c - s.qty; out.push({p: p, s: s, c: c, short: short, pct: short / c, orders: orderNumsFor(p, s.name)}); }
+  });
+  return out;
+}
+function orderNumsFor(p, size){
+  const key = normName(p.name) + '|' + (p.color || '') + '|' + (p.genero || '');
+  const nums = [];
+  db.orders.forEach(o => {
+    if (o.status !== 'ABIERTA') return;
+    const hit = (o.lines || []).some(l => { const lp = findP(l.pid); if (!lp) return false; const k2 = normName(lp.name) + '|' + (lp.color || '') + '|' + (lp.genero || ''); return k2 === key && l.size === size && (l.qty - (l.invoiced || 0)) > 0; });
+    if (hit && nums.indexOf(o.number) < 0) nums.push(o.number);
+  });
+  return nums;
+}
+function alertRow(p, s, text, level){
+  return "<div class='alertrow'><div class='alert-l " + level + "'></div><div><b>" + esc(p.name) + "</b> · talla " + esc(s.name) + "<div class='muted'>" + esc(text) + "</div></div><button class='btn alt sm2' onclick=\"dlgAlert.close();openSize('" + p.id + "','" + s.id + "')\">Ver</button></div>";
+}
+function alertHTML(){
+  const low = lowSizes(), sh = shortageList();
+  let h = "<div class='alert-h'>Stock bajo el aviso</div>";
+  h += low.length ? low.map(({p, s}) => alertRow(p, s, 'Quedan ' + s.qty + ' (aviso en ' + s.min + ')', 'warn')).join('') : "<div class='muted'>Nada bajo el aviso mínimo.</div>";
+  h += "<div class='alert-h'>Faltan para órdenes de compra</div>";
+  h += sh.length ? sh.map(x => alertRow(x.p, x.s, 'Faltan ' + x.short + ' de ' + x.c + ' comprometidas · OC ' + x.orders.join(', '), x.pct >= 0.2 ? 'bad' : 'warn')).join('') : "<div class='muted'>Las órdenes abiertas están cubiertas.</div>";
+  return h;
+}
+function updBell(){
+  const b = $('bell'); if (!b) return;
+  const low = lowSizes().length, sh = shortageList();
+  const n = low + sh.length;
+  b.innerHTML = "<span class='ic'>" + svgIcon('bell', 18) + "</span><span>Alertas " + n + "</span>";
+  const red = sh.some(x => x.pct >= 0.2);
+  b.style.background = red ? '#C62828' : (n ? '#B7791F' : '');
+  b.style.color = n ? '#fff' : '';
+}
+function showAlerts(){ if (lowSizes().length || shortageList().length) openAlerts(); }
+function labVisibleSizes(){
+  const q = norm(labQuery || '').trim();
+  return allSizes().filter(({p, s}) => !q || norm(p.name + ' ' + (p.color || '') + ' ' + (p.genero || '') + ' ' + s.name).includes(q));
+}
+function openLabelsDialog(preSid){
+  if (typeof JsBarcode === 'undefined') return alert('No se cargó el generador de códigos. Revisa la conexión.');
+  if (!allSizes().length) return alert('No hay tallas para etiquetar.');
+  labSel = preSid ? new Set([preSid]) : new Set();
+  labQuery = '';
+  $('labSearch').value = '';
+  renderLabPicker();
+  dlgLabels.showModal();
+}
+function renderLabPicker(){
+  let h = '', last = null;
+  labVisibleSizes().forEach(({p, s}) => {
+    if (!last || last.id !== p.id){ h += "<div class='lab-p'>" + esc(labelOf(p)) + "</div>"; last = p; }
+    h += "<label class='lab-s'><input type='checkbox' " + (labSel.has(s.id) ? 'checked' : '') + " onchange=\"toggleSize('" + s.id + "',this.checked)\"> Talla " + esc(s.name) + " <span class='muted'>" + esc(s.bc) + "</span></label>";
+  });
+  $('labList').innerHTML = h || "<div class='muted'>No hay tallas con ese texto.</div>";
+  updLabSummary();
+}
+function labAll(on){ labVisibleSizes().forEach(({s}) => on ? labSel.add(s.id) : labSel.delete(s.id)); renderLabPicker(); }
+function matrixNames(){
+  if (fF.size) return [fF.size];
+  if (fF.prod){ const p = findP(fF.prod); if (p) return sortedSizes(p).map(s => s.name); }
+  return sizeNames();
+}
+function matrixView(){
+  const names = matrixNames();
+  const colors = [...new Set(db.products.map(p => p.color || '').filter(Boolean))].sort();
+  const gens = [...new Set(db.products.map(p => p.genero || '').filter(Boolean))].sort();
+  const letters = ['A','B','C','D','E','F'].slice(0, 6).concat(names.map((n, i) => String.fromCharCode(71 + i))).concat([String.fromCharCode(71 + names.length)]).slice(0, 6 + names.length + 1);
+  const heads = names.map(n => mth('sz:' + n, 'Talla ' + n, 'num')).join('');
+  return "<div class='card'>" +
+    "<div class='row wrap' style='margin-bottom:10px;gap:8px'><input class='search' type='search' placeholder='Buscar producto, color o talla' value='" + esc(filt) + "' oninput='filt=this.value;matrixBody()' style='flex:2;min-width:180px'>" +
+    "<select onchange='matColor=this.value;matrixBody()' style='flex:1;min-width:120px'><option value=''>Todos los colores</option>" + colors.map(c => "<option value='" + esc(c) + "' " + (matColor === c ? 'selected' : '') + ">" + esc(c) + "</option>").join('') + "</select>" +
+    "<select onchange='matGen=this.value;matrixBody()' style='flex:1;min-width:120px'><option value=''>Todo género</option>" + gens.map(g => "<option value='" + esc(g) + "' " + (matGen === g ? 'selected' : '') + ">" + esc(g) + "</option>").join('') + "</select></div>" +
+    "<div class='row wrap' style='margin-bottom:12px;gap:8px'><button class='btn alt' onclick='matrixAddSize()'>+ Talla</button><button class='btn alt' onclick='exportMatrixCsv()'>Exportar a Excel</button></div>" +
+    "<div class='scroll'><table class='xl'><thead><tr class='hd'><th class='rn'>#</th>" + mth('product', 'Producto') + mth('color', 'Color') + mth('genero', 'Género') + mth('bodega', 'Bodega') + mth('code', 'Código') + heads + mth('total', 'Total', 'num') + "</tr></thead><tbody id='mbody'></tbody></table></div>" +
+    "<div class='muted' style='margin-top:8px'>Cada fila es un color del producto. Toca una celda para cambiar el stock. Si la talla no existe, toca el guion para crearla.</div></div>";
+}
+function matrixBody(){
+  const tb = $('mbody'); if (!tb) return;
+  const names = matrixNames(), rows = matrixRows();
+  tb.innerHTML = rows.length ? rows.map((r, i) => "<tr><td class='rn'>" + (i + 1) + "</td><td><b>" + esc(r.p.name) + "</b>" + (r.dup ? " <span class='pill sem-warn'>posible duplicado</span>" : '') + "</td><td>" + esc(r.p.color || '—') + "</td><td>" + esc(r.p.genero || '—') + "</td><td>" + esc(r.p.bodega || 'GENERAL') + "</td><td>" + esc(r.p.code) + "</td>" +
+    names.map(n => {
+      const s = r.cells[n];
+      if (!s) return "<td class='num missing' onclick=\"openMissingCell('" + r.p.id + "','" + esc(n) + "')\">—</td>";
+      const low = s.min !== null && s.qty <= s.min;
+      return "<td class='num " + (low ? 'lowc' : '') + " " + (s.qty < 0 ? 'down' : '') + "' onclick=\"openCellEdit('" + r.p.id + "','" + s.id + "')\">" + s.qty + "</td>";
+    }).join('') + "<td class='num'><b>" + r.total + "</b></td></tr>").join('') : "<tr><td colspan='" + (names.length + 7) + "' class='empty'>Sin resultados</td></tr>";
+}
+function openMissingCell(pid, name){
+  const p = findP(pid); if (!p) return;
+  let s = findS(p, name);
+  if (!s){ s = {id: uid(), name: name, qty: 0, min: null, bc: newBc()}; p.sizes.push(s); save(); }
+  openCellEdit(pid, s.id);
+}
+function matrixAddSize(){
+  if (!fF.prod) return alert('Primero elige un producto en el filtro de arriba, y luego toca + Talla.');
+  openSize(fF.prod);
+}
+
+/* ---------- Mismo motivo que el cambio anterior ---------- */
+function askMotivo(){
+  const m = window.lastMotive, box = $('motivoAsk');
+  if (!box) return;
+  if (!m || Date.now() - m.at > 60*60000 || m.user !== (user || '').toUpperCase()){ box.style.display = 'none'; return; }
+  $('motivoTxt').textContent = '¿Es el mismo motivo?  "' + m.reason + '"';
+  box.style.display = '';
+}
+function askMotivoB(){
+  const m = window.lastMotive, box = $('motivoAskB');
+  if (!box) return;
+  if (!m || Date.now() - m.at > 60*60000 || m.user !== (user || '').toUpperCase()){ box.style.display = 'none'; return; }
+  $('motivoTxtB').textContent = '¿Es el mismo motivo?  "' + m.reason + '"';
+  box.style.display = '';
+}
+function motivoSi(target, boxId){
+  if (window.lastMotive) $(target).value = window.lastMotive.reason;
+  $(boxId).style.display = 'none';
+}
+function motivoNo(target, boxId){ $(target).value = ''; $(boxId).style.display = 'none'; $(target).focus(); }
 
 /* ---------- Usuario ---------- */
 function openUser(){ $('uName').value = user; dlgUser.showModal(); }
@@ -2798,3 +2950,4 @@ function saveUser(){
 </script>
 </body>
 </html>
+
